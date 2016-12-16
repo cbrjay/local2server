@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<context:property-placeholder location="classpath:config.properties" />
+	<context:component-scan base-package="com.feidee" />
+	<annotation-driven />
+
+	<!--避免IE执行AJAX时，返回JSON出现下载文件 -->
+	<beans:bean id="mappingJackson2HttpMessageConverter"
+		class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+		<beans:property name="supportedMediaTypes">
+			<beans:list>
+				<beans:value>text/html;charset=UTF-8</beans:value>
+				<beans:value>text/json;charset=UTF-8</beans:value>
+				<beans:value>application/json;charset=UTF-8</beans:value>
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	<!-- 采用SpringMVC自带的JSON转换工具，支持@ResponseBody注解 -->
+	<beans:bean
+		class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+		<beans:property name="messageConverters">
+			<beans:list>
+				<beans:ref bean="mappingJackson2HttpMessageConverter" />    <!-- JSON转换器 -->
+			</beans:list>
+		</beans:property>
+
+		<beans:property name="webBindingInitializer">
+			<beans:bean
+				class="org.springframework.web.bind.support.ConfigurableWebBindingInitializer">
+				<beans:property name="conversionService" ref="conversionService" />
+			</beans:bean>
+		</beans:property>
+
+	</beans:bean>
+
+	<beans:bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/pages/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+
+	<beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
+	<beans:bean id="conversionService"
+		class="org.springframework.format.support.DefaultFormattingConversionService" />
+	<annotation-driven>
+		<!-- 处理responseBody 里面日期类型 -->
+		<message-converters>
+			<beans:bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<beans:property name="objectMapper">
+					<beans:bean class="com.fasterxml.jackson.databind.ObjectMapper">
+						<beans:property name="dateFormat">
+							<beans:bean class="java.text.SimpleDateFormat">
+								<beans:constructor-arg type="java.lang.String"
+									value="yyyy-MM-dd HH:mm:ss" />
+							</beans:bean>
+						</beans:property>
+						<beans:property name="serializationInclusion">
+							<beans:value type="com.fasterxml.jackson.annotation.JsonInclude.Include">NON_NULL</beans:value>
+						</beans:property>
+					</beans:bean>
+				</beans:property>
+			</beans:bean>
+		</message-converters>
+	</annotation-driven>
+
+
+
+</beans:beans>
