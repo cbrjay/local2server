@@ -47,7 +47,7 @@ public class Sftp {
 
 	public List<LsEntry> ls(String path) throws SftpException {
 		List<LsEntry> list = new ArrayList<>();
-		channel.ls("/usr/local/tomcat-6.0.41/tomcat_cardniudata/bin", new LsEntrySelector() {
+		channel.ls(path, new LsEntrySelector() {
 			@Override
 			public int select(LsEntry entry) {
 				if (".".equals(entry.getFilename()) || "..".equals(entry.getFilename())) {
