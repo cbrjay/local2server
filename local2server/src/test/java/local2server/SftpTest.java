@@ -54,7 +54,7 @@ public class SftpTest {
 			if (".".equals(len.getFilename()) || "..".equals(len.getFilename())) {
 				continue;
 			}
-			System.out.println(len.getFilename());
+			System.out.println(len.getLongname());
 		}
 		System.out.println(c.ls("/usr/local/tomcat-6.0.41/tomcat_cardniudata/bin"));
 		channel.disconnect();

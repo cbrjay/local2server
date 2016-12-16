@@ -24,9 +24,6 @@
 
 	<!-- 基本配置 -->
 	<import resource="classpath:spring-conf/applicationContext-common.xml" />
-	 <import resource="classpath:spring-conf/applicationContext-bankdata.xml" /> 
-	 <import resource="classpath:spring-conf/applicationContext-mailgrab.xml" />
-	 <import resource="classpath:spring-conf/applicationContext-cardniudata.xml" />
 	<!--异步线程执行器 -->
 	<bean id="taskExecutor"
 		class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
