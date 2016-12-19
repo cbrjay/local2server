@@ -16,9 +16,8 @@
 	<context:annotation-config />
 
 	<!-- 配置文件 -->
-	<context:property-placeholder location="classpath:db-config.properties,classpath:config.properties" />
-
-
+	<!-- <context:property-placeholder location="classpath:db-config.properties,classpath:config.properties" 
+		/> -->
 
 
 
